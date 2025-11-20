@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en" style="height: auto; min-height: 100%;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Gaming Universe</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+        
+        .gaming-card {
+            transform-style: preserve-3d;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+            cursor: pointer;
+        }
+        
+        .gaming-card:hover {
+            transform: translateY(-20px) scale(1.05);
+        }
+        
+        .floating {
+            animation: floating 6s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            25% { transform: translateY(-20px) rotate(2deg); }
+            50% { transform: translateY(-10px) rotate(-2deg); }
+            75% { transform: translateY(-15px) rotate(1deg); }
+        }
+        
+        .pulse-glow {
+            animation: pulse-glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes pulse-glow {
+            from { box-shadow: 0 0 20px rgba(255, 215, 0, 0.5), 0 0 40px rgba(255, 215, 0, 0.3); }
+            to { box-shadow: 0 0 40px rgba(255, 215, 0, 0.8), 0 0 80px rgba(255, 215, 0, 0.5); }
+        }
+        
+        .neon-text {
+            text-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 40px currentColor;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: linear-gradient(45deg, #ffd700, #ff6b6b);
+            border-radius: 50%;
+            animation: particle-float 8s linear infinite;
+        }
+        
+        @keyframes particle-float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body style="height: auto; min-height: 100%;" class="bg-black text-white overflow-x-hidden" style="font-family: 'Orbitron', monospace;">
+    <div id="particles" class="fixed inset-0 pointer-events-none z-0"></div>
+    <canvas id="bg-canvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+    
+    <div class="relative z-10">
+        <section class="min-h-screen flex items-center justify-center relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-br from-purple-900/50 via-blue-900/50 to-black/50"></div>
+            
+            <div class="absolute top-20 left-10 floating">
+                <div class="w-20 h-20 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full opacity-20 blur-sm"></div>
+            </div>
+            <div class="absolute top-40 right-20 floating" style="animation-delay: -2s;">
+                <div class="w-16 h-16 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full opacity-20 blur-sm"></div>
+            </div>
+            <div class="absolute bottom-40 left-1/4 floating" style="animation-delay: -4s;">
+                <div class="w-24 h-24 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full opacity-20 blur-sm"></div>
+            </div>
+            
+            <div class="text-center z-20 relative px-4">
+                <div class="pulse-glow inline-block p-8 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 mb-8 animate__animated animate__zoomIn">
+                    <i class="fas fa-gamepad text-6xl text-white"></i>
+                </div>
+                <h1 class="text-6xl md:text-8xl font-black mb-6 neon-text bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 bg-clip-text text-transparent animate__animated animate__fadeInUp">
+                     YONO GAME 🎮 
+                </h1>
+                <h2 class="text-4xl md:text-6xl font-bold mb-8 neon-text bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent animate__animated animate__fadeInUp animate__delay-1s">
+                    UNIVERSE
+                </h2>
+                <p class="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto animate__animated animate__fadeInUp animate__delay-2s">
+                    Click any game card to start playing instantly
+                </p>
+                <button onclick="scrollToGames()" class="bg-gradient-to-r from-yellow-400 to-orange-500 text-black px-12 py-4 rounded-full text-xl font-bold hover:scale-110 transform transition-all duration-300 pulse-glow animate__animated animate__pulse animate__infinite">
+                    <i class="fas fa-rocket mr-3"></i>LAUNCH GAMES
+                </button>
+            </div>
+        </section>
+        
+        <section id="games-section" class="py-20 px-4 relative">
+            <div class="max-w-7xl mx-auto">
+                <h2 class="text-5xl font-black text-center mb-16 neon-text bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+                    CLICK TO PLAY
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <a href="https://jaihorummycash.com/?code=E74LX8873N6&t=1763109400" target="_blank" class="gaming-card bg-gradient-to-br from-red-600 to-pink-600 rounded-2xl p-6 h-80 relative overflow-hidden block">
+                        <div class="absolute inset-0 bg-black/20 rounded-2xl"></div>
+                        <div class="relative z-10 h-full flex flex-col">
+                            <div class="flex items-center mb-4">
+                                <div class="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center mr-4 floating">
+                                    <i class="fas fa-spades text-3xl text-white"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-2xl font-bold">JAI HO</h3>
+                                    <p class="text-red-200">RUMMY CASH</p>
+                                </div>
+                            </div>
+                            <p class="text-white/80 mb-6 flex-1">Experience the thrill of premium rummy with real cash rewards</p>
+                            <div class="bg-white/20 backdrop-blur-sm rounded-xl px-6 py-3 text-center font-bold">
+                                <i class="fas fa-mouse-pointer mr-2"></i>CLICK TO PLAY
+                            </div>
+                            <div class="text-6xl text-white/10 absolute bottom-4 right-4">
+                                <i class="fas fa-coins"></i>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="https://www.rummyludo1.com?code=WZTP5YGX44L&t=1763109688" target="_blank" class="gaming-card bg-gradient-to-br from-green-600 to-emerald-600 rounded-2xl p-6 h-80 relative overflow-hidden block">
+                        <div class="absolute inset-0 bg-black/20 rounded-2xl"></div>
+                        <div class="relative z-10 h-full flex flex-col">
+                            <div class="flex items-center mb-4">
+                                <div class="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center mr-4 floating" style="animation-delay: -1s;">
+                                    <i class="fas fa-dice text-3xl text-white"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-2xl font-bold">RUMMY</h3>
+                                    <p class="text-green-200">LUDO</p>
+                                </div>
+                            </div>
+                            <p class="text-white/80 mb-6 flex-1">Classic board game meets modern gaming technology</p>
+                            <div class="bg-white/20 backdrop-blur-sm rounded-xl px-6 py-3 text-center font-bold">
+                                <i class="fas fa-mouse-pointer mr-2"></i>CLICK TO PLAY
+                            </div>
+                            <div class="text-6xl text-white/10 absolute bottom-4 right-4">
+                                <i class="fas fa-chess-board"></i>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="https://www.777game5.com/?code=KJV1EJWSSYZ&t=1763109282" target="_blank" class="gaming-card bg-gradient-to-br from-yellow-600 to-orange-600 rounded-2xl p-6 h-80 relative overflow-hidden block">
+                        <div class="absolute inset-0 bg-black/20 rounded-2xl"></div>
+                        <div class="relative z-10 h-full flex flex-col">
+                            <div class="flex items-center mb-4">
+                                <div class="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center mr-4 floating" style="animation-delay: -2s;">
+                                    <i class="fas fa-coins text-3xl text-white"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-2xl font-bold">777</h3>
+                                    <p class="text-yellow-200">GAME</p>
+                                </div>
+                            </div>
+                            <p class="text-white/80 mb-6 flex-1">Lucky sevens bring fortune in this casino classic</p>
+                            <div class="bg-white/20 backdrop-blur-sm rounded-xl px-6 py-3 text-center font-bold">
+                                <i class="fas fa-mouse-pointer mr-2"></i>CLICK TO PLAY
+                            </div>
+                            <div class="text-6xl text-white/10 absolute bottom-4 right-4">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="https://www.jaihoslots28.com/?code=EGPXG6UUXKM&t=1763109830" target="_blank" class="gaming-card bg-gradient-to-br from-purple-600 to-indigo-600 rounded-2xl p-6 h-80 relative overflow-hidden block">
+                        <div class="absolute inset-0 bg-black/20 rounded-2xl"></div>
+                        <div class="relative z-10 h-full flex flex-col">
+                            <div class="flex items-center mb-4">
+                                <div class="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center mr-4 floating" style="animation-delay: -3s;">
+                                    <i class="fas fa-gem text-3xl text-white"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-2xl font-bold">JAI HO</h3>
+                                    <p class="text-purple-200">SLOTS</p>
+                                </div>
+                            </div>
+                            <p class="text-white/80 mb-6 flex-1">Spin the reels of fortune in premium slot machines</p>
+                            <div class="bg-white/20 backdrop-blur-sm rounded-xl px-6 py-3 text-center font-bold">
+                                <i class="fas fa-mouse-pointer mr-2"></i>CLICK TO PLAY
+                            </div>
+                            <div class="text-6xl text-white/10 absolute bottom-4 right-4">
+                                <i class="fas fa-crown"></i>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="https://uonovipm.com/?code=5NF3EPRB8WF&t=1763110177" target="_blank" class="gaming-card bg-gradient-to-br from-blue-600 to-cyan-600 rounded-2xl p-6 h-80 relative overflow-hidden block">
+                        <div class="absolute inset-0 bg-black/20 rounded-2xl"></div>
+                        <div class="relative z-10 h-full flex flex-col">
+                            <div class="flex items-center mb-4">
+                                <div class="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center mr-4 floating" style="animation-delay: -4s;">
+                                    <i class="fas fa-star text-3xl text-white"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-2xl font-bold">UONOVI</h3>
+                                    <p class="text-blue-200">PM</p>
+                                </div>
+                            </div>
+                            <p class="text-white/80 mb-6 flex-1">Premium gaming experience with exclusive features</p>
+                            <div class="bg-white/20 backdrop-blur-sm rounded-xl px-6 py-3 text-center font-bold">
+                                <i class="fas fa-mouse-pointer mr-2"></i>CLICK TO PLAY
+                            </div>
+                            <div class="text-6xl text-white/10 absolute bottom-4 right-4">
+                                <i class="fas fa-rocket"></i>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="https://www.abcrummy99.com/?code=75CRMY9LQCT&t=1763110423" target="_blank" class="gaming-card bg-gradient-to-br from-teal-600 to-green-600 rounded-2xl p-6 h-80 relative overflow-hidden block">
+                        <div class="absolute inset-0 bg-black/20 rounded-2xl"></div>
+                        <div class="relative z-10 h-full flex flex-col">
+                            <div class="flex items-center mb-4">
+                                <div class="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center mr-4 floating" style="animation-delay: -5s;">
+                                    <i class="fas fa-heart text-3xl text-white"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-2xl font-bold">ABC</h3>
+                                    <p class="text-teal-200">RUMMY</p>
+                                </div>
+                            </div>
+                            <p class="text-white/80 mb-6 flex-1">Master the art of rummy with strategic gameplay</p>
+                            <div class="bg-white/20 backdrop-blur-sm rounded-xl px-6 py-3 text-center font-bold">
+                                <i class="fas fa-mouse-pointer mr-2"></i>CLICK TO PLAY
+                            </div>
+                            <div class="text-6xl text-white/10 absolute bottom-4 right-4">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="https://www.jaihoarcade32.com/?code=AZD9UK9TDMR&t=1763110548" target="_blank" class="gaming-card bg-gradient-to-br from-pink-600 to-rose-600 rounded-2xl p-6 h-80 relative overflow-hidden block">
+                        <div class="absolute inset-0 bg-black/20 rounded-2xl"></div>
+                        <div class="relative z-10 h-full flex flex-col">
+                            <div class="flex items-center mb-4">
+                                <div class="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center mr-4 floating" style="animation-delay: -6s;">
+                                    <i class="fas fa-gamepad text-3xl text-white"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-2xl font-bold">JAI HO</h3>
+                                    <p class="text-pink-200">ARCADE</p>
+                                </div>
+                            </div>
+                            <p class="text-white/80 mb-6 flex-1">Retro arcade games with modern twists and rewards</p>
+                            <div class="bg-white/20 backdrop-blur-sm rounded-xl px-6 py-3 text-center font-bold">
+                                <i class="fas fa-mouse-pointer mr-2"></i>CLICK TO PLAY
+                            </div>
+                            <div class="text-6xl text-white/10 absolute bottom-4 right-4">
+                                <i class="fas fa-joystick"></i>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="https://www.indcluba.com/?code=34UZ6D7XZHN&t=1763110635" target="_blank" class="gaming-card bg-gradient-to-br from-orange-600 to-red-600 rounded-2xl p-6 h-80 relative overflow-hidden block">
+                        <div class="absolute inset-0 bg-black/20 rounded-2xl"></div>
+                        <div class="relative z-10 h-full flex flex-col">
+                            <div class="flex items-center mb-4">
+                                <div class="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center mr-4 floating" style="animation-delay: -7s;">
+                                    <i class="fas fa-crown text-3xl text-white"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-2xl font-bold">IND</h3>
+                                    <p class="text-orange-200">CLUB</p>
+                                </div>
+                            </div>
+                            <p class="text-white/80 mb-6 flex-1">Exclusive VIP gaming club with premium benefits</p>
+                            <div class="bg-white/20 backdrop-blur-sm rounded-xl px-6 py-3 text-center font-bold">
+                                <i class="fas fa-mouse-pointer mr-2"></i>CLICK TO PLAY
+                            </div>
+                            <div class="text-6xl text-white/10 absolute bottom-4 right-4">
+                                <i class="fas fa-vip"></i>
+                            </div>
+                        </div>
+                    </a>
+                    
+                      <a href="https://playkaro365.com/live-casino" target="_blank" class="gaming-card bg-gradient-to-br from-amber-600 to-yellow-600 rounded-2xl p-6 h-80 relative overflow-hidden block">
+                        <div class="absolute inset-0 bg-black/20 rounded-2xl"></div>
+                        <div class="relative z-10 h-full flex flex-col">
+                            <div class="flex items-center mb-4">
+                                <div class="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center mr-4 floating" style="animation-delay: -9s;">
+                                    <i class="fas fa-dice-d20 text-3xl text-white"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-2xl font-bold">PLAY KARO</h3>
+                                    <p class="text-amber-200">LIVE CASINO</p>
+                                </div>
+                            </div>
+                            <p class="text-white/80 mb-6 flex-1">Experience live casino action with real dealers 24/7</p>
+                            <div class="bg-white/20 backdrop-blur-sm rounded-xl px-6 py-3 text-center font-bold">
+                                <i class="fas fa-mouse-pointer mr-2"></i>CLICK TO PLAY
+                            </div>
+                            <div class="text-6xl text-white/10 absolute bottom-4 right-4">
+                                <i class="fas fa-cards"></i>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="https://bingo101.life/?code=6YFXLN2FWCS&t=1763110720" target="_blank" class="gaming-card bg-gradient-to-br from-violet-600 to-purple-600 rounded-2xl p-6 h-80 relative overflow-hidden block">
+                        <div class="absolute inset-0 bg-black/20 rounded-2xl"></div>
+                        <div class="relative z-10 h-full flex flex-col">
+                            <div class="flex items-center mb-4">
+                                <div class="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center mr-4 floating" style="animation-delay: -8s;">
+                                    <i class="fas fa-bullseye text-3xl text-white"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-2xl font-bold">BINGO</h3>
+                                    <p class="text-violet-200">101</p>
+                                </div>
+                            </div>
+                            <p class="text-white/80 mb-6 flex-1">Classic bingo with exciting prizes and social fun</p>
+                            <div class="bg-white/20 backdrop-blur-sm rounded-xl px-6 py-3 text-center font-bold">
+                                <i class="fas fa-mouse-pointer mr-2"></i>CLICK TO PLAY
+                            </div>
+                            <div class="text-6xl text-white/10 absolute bottom-4 right-4">
+                                <i class="fas fa-gift"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+        
+        <footer class="py-16 px-4 bg-gradient-to-t from-black to-gray-900">
+            <div class="max-w-4xl mx-auto text-center">
+                <div class="pulse-glow inline-block p-6 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 mb-8">
+                    <i class="fas fa-gamepad text-4xl text-white"></i>
+                </div>
+                <h3 class="text-3xl font-bold mb-4 neon-text">GAME RESPONSIBLY</h3>
+                <p class="text-gray-400 mb-8 max-w-2xl mx-auto">
+                    All games are for entertainment purposes. Play within your limits and enjoy the experience.
+                </p>
+                <div class="flex flex-wrap justify-center gap-4 md:gap-8 text-sm text-gray-500">
+                    <span class="flex items-center"><i class="fas fa-shield-alt mr-2"></i>Secure Gaming</span>
+                    <span class="flex items-center"><i class="fas fa-mobile-alt mr-2"></i>Mobile Optimized</span>
+                    <span class="flex items-center"><i class="fas fa-clock mr-2"></i>24/7 Available</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+    <script>
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 8 + 's';
+                particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        function init3DBackground() {
+            const canvas = document.getElementById('bg-canvas');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
+            
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            
+            const geometry = new THREE.BoxGeometry(1, 1, 1);
+            const materials = [
+                new THREE.MeshBasicMaterial({ color: 0xff6b6b, transparent: true, opacity: 0.1 }),
+                new THREE.MeshBasicMaterial({ color: 0x4ecdc4, transparent: true, opacity: 0.1 }),
+                new THREE.MeshBasicMaterial({ color: 0xffe66d, transparent: true, opacity: 0.1 }),
+                new THREE.MeshBasicMaterial({ color: 0xa8e6cf, transparent: true, opacity: 0.1 })
+            ];
+            
+            const cubes = [];
+            for (let i = 0; i < 20; i++) {
+                const cube = new THREE.Mesh(geometry, materials[Math.floor(Math.random() * materials.length)]);
+                cube.position.x = (Math.random() - 0.5) * 20;
+                cube.position.y = (Math.random() - 0.5) * 20;
+                cube.position.z = (Math.random() - 0.5) * 20;
+                cube.rotation.x = Math.random() * Math.PI;
+                cube.rotation.y = Math.random() * Math.PI;
+                scene.add(cube);
+                cubes.push(cube);
+            }
+            
+            camera.position.z = 5;
+            
+            function animate() {
+                requestAnimationFrame(animate);
+                
+                cubes.forEach(cube => {
+                    cube.rotation.x += 0.01;
+                    cube.rotation.y += 0.01;
+                    cube.position.y += Math.sin(Date.now() * 0.001 + cube.position.x) * 0.01;
+                });
+                
+                renderer.render(scene, camera);
+            }
+            
+            animate();
+            
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        }
+        
+        function scrollToGames() {
+            document.getElementById('games-section').scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            init3DBackground();
+        });
+    </script>
+</body>
+</html>
